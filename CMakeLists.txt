@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(optoforce_pubsub)
+project(optoforce_sensor)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp rospy std_msgs geometry_msgs message_generation
+  roscpp
 )
 
 ## System dependencies are found with CMake's conventions
@@ -63,10 +63,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs geometry_msgs # Or other packages containing msgs
- )
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -100,7 +100,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES optoforce_sensor
-  CATKIN_DEPENDS roscpp std_msgs geometry_msgs message_runtime
+  CATKIN_DEPENDS roscpp
 #  DEPENDS system_lib
 )
 
@@ -134,18 +134,9 @@ set(OMD_BIN ${PROJECT_SOURCE_DIR}/lib/libOMD.so)
 # add_dependencies(optoforce_sensor_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(optoforce_sensor_node ${catkin_LIBRARIES} ${OMD_BIN})
-
-add_executable(optoforce_sub src/optoforce_sub.cpp)
-set(OMD_BIN ${PROJECT_SOURCE_DIR}/lib/libOMD.so)
-#add_library(libomd 
-## Add cmake target dependencies of the executable
-## same as for the library above
-
-## Specify libraries to link a library or executable target against
-target_link_libraries(optoforce_sensor_node ${catkin_LIBRARIES} ${OMD_BIN})
-
-
+ target_link_libraries(optoforce_sensor_node
+   ${catkin_LIBRARIES} ${OMD_BIN}
+ )
 
 #############
 ## Install ##
