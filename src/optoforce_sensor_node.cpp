@@ -1,7 +1,9 @@
 #include <iostream>
+#include <sstream>
 #include "optoforce_sensor/opto.h"
 #include "ros/ros.h"
 #include "geometry_msgs/WrenchStamped.h"
+#include "std_msgs/String.h"
 #include <unistd.h>
 #include <string.h>
 
@@ -50,11 +52,11 @@ int main(int argc, char **argv)
             //init ROS node
             std::cout<<"Found 6DOF sensor -> Starting ROS node"<<std::endl;
             ros::init(argc, argv, "OForceSensorPublisher");
-            ros::NodeHandle n("~");
+            ros::NodeHandle n;
             //Creating wrench publisher
             ros::Publisher wrench_pub_raw = n.advertise<geometry_msgs::WrenchStamped>("OptoForceWrench_raw", 1000);
             ros::Publisher wrench_pub = n.advertise<geometry_msgs::WrenchStamped>("OptoForceWrench", 1000);
-
+	    ros::Publisher wrench_pub_str = n.advertise<std_msgs::String>("OptoForceWrench_str", 1000);
             // get sensitivy gains from rosparam server
             n.param("fx_gain", fx_gain, 0.0);
             n.param("fy_gain", fy_gain, 0.0);
@@ -107,6 +109,13 @@ int main(int argc, char **argv)
             while(ros::ok())
             {
                 geometry_msgs::WrenchStamped wrench_msg; // Create msg
+		std_msgs::String msg;
+
+		std::stringstream ss;
+		ss << "Force x: " << pack6D.Fx << " y: " << pack6D.Fy << " z: " << pack6D.Fz << "\nTorque X: " << pack6D.Tx << " y: " << pack6D.Ty << " z: " << pack6D.Tz;
+		msg.data = ss.str();
+		wrench_pub_str.publish(msg);
+
                 //Fill msg
                 wrench_msg.header.stamp = ros::Time::now();
                 wrench_msg.wrench.force.x = pack6D.Fx;
