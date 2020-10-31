@@ -134,18 +134,9 @@ set(OMD_BIN ${PROJECT_SOURCE_DIR}/lib/libOMD.so)
 # add_dependencies(optoforce_sensor_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(optoforce_sensor_node ${catkin_LIBRARIES} ${OMD_BIN})
-
-add_executable(optoforce_sub src/optoforce_sub.cpp)
-set(OMD_BIN ${PROJECT_SOURCE_DIR}/lib/libOMD.so)
-#add_library(libomd 
-## Add cmake target dependencies of the executable
-## same as for the library above
-
-## Specify libraries to link a library or executable target against
- target_link_libraries(optoforce_sensor_node ${catkin_LIBRARIES} ${OMD_BIN})
-
-
+ target_link_libraries(optoforce_sensor_node
+   ${catkin_LIBRARIES} ${OMD_BIN}
+ )
 
 #############
 ## Install ##

@@ -141,7 +141,7 @@ int main(int argc, char **argv)
     }
     else
     {
-    	std::cout<<"No sensor available"<<std::endl;
+   	std::cout<<"No sensor available"<<std::endl;
     }
     return 0;
 }

@@ -1,13 +1,11 @@
 #include <iostream>
-#include "optoforce_sensor/opto.h"
 #include "ros/ros.h"
 #include "geometry_msgs/WrenchStamped.h"
-#include <unistd.h>
 #include <string.h>
 
-void subscriberCallback()
+void subscriberCallback(const geometry_msgs::WrenchStamped::ConstPtr & wrench_msg)
 {
-	ROS_INFO("", wrench_msg->);
+	ROS_INFO("%f", wrench_msg->wrench.force.x);
 }
 
 int main(int argc, char **argv)
