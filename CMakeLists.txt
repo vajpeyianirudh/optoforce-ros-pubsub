@@ -6,6 +6,9 @@ project(optoforce_sensor)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  std_msgs
+  geometry_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -63,10 +66,12 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs  
+   geometry_msgs 
+     # Or other packages containing msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -84,7 +89,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
 # generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
+#   cfg/hex-70-ce-2000n-ice025.yaml
 #   cfg/DynReconf2.cfg
 # )
 
@@ -101,6 +106,7 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES optoforce_sensor
   CATKIN_DEPENDS roscpp
+  message_runtime
 #  DEPENDS system_lib
 )
 
@@ -137,6 +143,20 @@ set(OMD_BIN ${PROJECT_SOURCE_DIR}/lib/libOMD.so)
  target_link_libraries(optoforce_sensor_node
    ${catkin_LIBRARIES} ${OMD_BIN}
  )
+
+add_executable(optoforce_sub src/optoforce_sub.cpp)
+set(OMD_BIN ${PROJECT_SOURCE_DIR}/lib/libOMD.so)
+#add_library(libomd 
+## Add cmake target dependencies of the executable
+## same as for the library above
+# add_dependencies(optoforce_sensor_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+## Specify libraries to link a library or executable target against
+ target_link_libraries(optoforce_sub
+   ${catkin_LIBRARIES} ${OMD_BIN}
+ )
+
+
 
 #############
 ## Install ##

@@ -50,22 +50,25 @@ int main(int argc, char **argv)
             //init ROS node
             std::cout<<"Found 6DOF sensor -> Starting ROS node"<<std::endl;
             ros::init(argc, argv, "OForceSensorPublisher");
-            ros::NodeHandle n("~");
+            ros::NodeHandle n;
             //Creating wrench publisher
             ros::Publisher wrench_pub_raw = n.advertise<geometry_msgs::WrenchStamped>("OptoForceWrench_raw", 1000);
             ros::Publisher wrench_pub = n.advertise<geometry_msgs::WrenchStamped>("OptoForceWrench", 1000);
 
             // get sensitivy gains from rosparam server
-            n.param("fx_gain", fx_gain, 0.0);
-            n.param("fy_gain", fy_gain, 0.0);
-            n.param("fz_gain", fz_gain, 0.0);
+	    if (! n.getParam("/fx_gain", fx_gain) || ! n.getParam("/fy_gain", fy_gain) || ! n.getParam("/fz_gain", fz_gain) || ! n.getParam("/tx_gain", tx_gain) || ! n.getParam("/ty_gain", ty_gain) || ! n.getParam("/tz_gain", tz_gain) || ! n.getParam("/speed", speed) || ! n.getParam("/filter", filter)){ 
 
-            n.param("tx_gain", tx_gain, 0.0);
-            n.param("ty_gain", ty_gain, 0.0);
-            n.param("tz_gain", tz_gain, 0.0);
+	    	n.param("fx_gain", fx_gain, 0.0);
+            	n.param("fy_gain", fy_gain, 0.0);
+            	n.param("fz_gain", fz_gain, 0.0);
 
-            n.param("speed", speed, 1000);
-            n.param("filter", filter, 0);
+            	n.param("tx_gain", tx_gain, 0.0);
+            	n.param("ty_gain", ty_gain, 0.0);
+            	n.param("tz_gain", tz_gain, 0.0);
+
+            	n.param("speed", speed, 1000);
+            	n.param("filter", filter, 0);
+	    }
 
             double double_thresh = 0.0001;
 
@@ -108,14 +111,6 @@ int main(int argc, char **argv)
             {
                 geometry_msgs::WrenchStamped wrench_msg; // Create msg
                 //Fill msg
-                wrench_msg.header.stamp = ros::Time::now();
-                wrench_msg.wrench.force.x = pack6D.Fx;
-                wrench_msg.wrench.force.y = pack6D.Fy;
-                wrench_msg.wrench.force.z = pack6D.Fz;
-                wrench_msg.wrench.torque.x = pack6D.Tx;
-                wrench_msg.wrench.torque.y = pack6D.Ty;
-                wrench_msg.wrench.torque.z = pack6D.Tz;
-                wrench_pub_raw.publish(wrench_msg);
 
                 if (sens_params_set) {
                     wrench_msg.header.stamp = ros::Time::now();
@@ -127,6 +122,16 @@ int main(int argc, char **argv)
                     wrench_msg.wrench.torque.z = pack6D.Tz / tz_gain;
                     wrench_pub.publish(wrench_msg);
                 }
+		else{
+		   wrench_msg.header.stamp = ros::Time::now();
+                   wrench_msg.wrench.force.x = pack6D.Fx;
+                   wrench_msg.wrench.force.y = pack6D.Fy;
+                   wrench_msg.wrench.force.z = pack6D.Fz;
+                   wrench_msg.wrench.torque.x = pack6D.Tx;
+                   wrench_msg.wrench.torque.y = pack6D.Ty;
+                   wrench_msg.wrench.torque.z = pack6D.Tz;
+                   wrench_pub_raw.publish(wrench_msg);
+		}
 
                 ros::spinOnce();
                 loop_rate.sleep();

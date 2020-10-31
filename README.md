@@ -1,13 +1,13 @@
 # optoforce-ros-pubsub
-optoforce F/T sensor publisher subscriber
+optoforce F/T sensor (hex-70-ce-2000n-ice025/model-serialnum) publisher subscriber
 
 optoforce_sensor_node.cpp - this is the publisher for the sensor
 
 optoforce_sub.cpp - this is the subscriber node
 
-the subscriber node is not complete as of now, please wait or you may edit your own version and help me as well
+before running the nodes please load the configure 'hex-70-ce-2000n-ice025.yaml' file located in 'cfg' from root of package with command
 
-Changes made in package.xml and CMakeLists.txt files
+>> rosparam load cfg/hex-70-ce-2000n-ice025.yaml
 
-You may contact me at vajpeyianirudh@gmail.com
+For any other details you may contact me at vajpeyianirudh@gmail.com
 Thanks
