@@ -1,9 +1,0 @@
-optoforce_node:
-    fx_gain : 33.43
-    fy_gain : 35.19
-    fz_gain : 4.08
-    tx_gain : 616.93
-    ty_gain : 599.98
-    tz_gain : 885.4
-    speed: 1000
-    filter: 0
